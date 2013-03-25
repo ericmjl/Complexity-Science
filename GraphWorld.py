@@ -21,7 +21,6 @@ except ImportError:
 from Graph import Vertex
 from Graph import Edge
 from Graph import Graph
-from RandomGraph import RandomGraph
 
 
 class GraphCanvas(GuiCanvas):
@@ -185,8 +184,7 @@ class RandomLayout(Layout):
             others.append(v)
 
 
-
-def main(script, n='4', *args):
+def main(script, n='13', *args):
 
     # create n Vertices
     n = int(n)
@@ -194,8 +192,10 @@ def main(script, n='4', *args):
     vs = [Vertex(c) for c in labels[:n]]
 
     # create a graph and a layout
-    g = RandomGraph(vs, [])
-    g.add_random_edges(0.50)
+    g = RandomGraph(vs)
+    g.add_random_edges(0.11)
+    print g.is_connected()
+    
     layout = CircleLayout(g)
 
     # draw the graph
