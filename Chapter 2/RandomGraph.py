@@ -83,7 +83,7 @@ def count_connectivity(graphs):
         
         
 def main(script, *args):
-    n = 20 #number of nodes
+    n = 5 #number of nodes
     m = float(15) #number of graphs
     
     ps = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]

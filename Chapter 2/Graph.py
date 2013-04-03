@@ -291,7 +291,7 @@ class Graph(dict):
                             if len(self.out_edges(w)) == degree:
                                 pass        
         
-        elif (degree * num_vertices) % 2 != 0:
+        elif (degree * len(self.vertices())) % 2 != 0:
             raise CustomError('The degree specified cannot be generated for the current graph.')            
                     
         elif degree >= num_vertices:
