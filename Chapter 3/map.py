@@ -8,6 +8,7 @@ Distributed under the GNU General Public License at gnu.org/licenses/gpl.html.
 """
 
 import string
+import Generator
 
 
 class LinearMap(object):
@@ -56,6 +57,10 @@ class BetterMap(object):
         """Finds the right LinearMap for key (k) and looks up (k) in it."""
         m = self.find_map(k)
         return m.get(k)
+        
+    def __len__(self):
+        return len(self)
+
 
 
 class HashMap(object):
@@ -103,27 +108,137 @@ def etime():
     user, sys, chuser, chsys, real = os.times()
     return user+sys
 
+import string
+import csv
+import matplotlib.pyplot as pyplot
+
+def store_data(map_type, data_size, time_elapsed):
+    with open("data.csv", 'a') as csvfile:
+        data = [map_type, data_size, time_elapsed]
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(data)
+        
+        
+
 def main(script):
 
-	"""Characterize the time of Hashmap"""
-    start = etime()
-    
-    m = HashMap()
-    s = string.ascii_lowercase
-
-    for k, v in enumerate(s):
-        m.add(k, v)
-
-    for k in range(len(s)):
-        print k, m.get(k)
+    with open("data.csv", 'a') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(['map_type', 'data_size', 'time_elapsed'])
         
-    end = etime()
+        
+    values_to_test = [10**n for n in range(6)]
+    print values_to_test
     
-    elapsed = end - start
-    print elapsed
+    for value in values_to_test:
+        runs = 1
+        while runs <= 5:
+            s = list(xrange(value))
+       
+            """Characterize the time of Hashmap"""
+            start = etime()
+    
+            m = HashMap()
+        #     s = string.ascii_lowercase + string.ascii_uppercase
 
-	"""Characterize the time of BetterMap"""
-	
+            for k, v in enumerate(s):
+                m.add(k, v)
+
+        #     for k in range(len(s)):
+        #         print k, m.get(k)
+        
+            end = etime()
+    
+            elapsed = end - start
+            print elapsed
+            store_data('hashmap', len(s), elapsed)
+
+            """Characterize the time of BetterMap"""
+    
+            start = etime()
+    
+            m = BetterMap()
+    
+            for k, v in enumerate(s):
+                m.add(k, v)
+    
+            end = etime()
+    
+            elapsed = end - start
+            print elapsed
+    
+            store_data('bettermap', len(s), elapsed)
+    
+            """Characterize the time of LinearMap"""
+    
+            start = etime()
+    
+            m = LinearMap()
+    
+            for k, v in enumerate(s):
+                m.add(k, v)
+    
+            end = etime()
+    
+            elapsed = end - start
+            print elapsed
+            store_data('linearmap', len(s), elapsed)
+            
+            runs +=1 
+    
+    with open('data.csv', 'rU') as f:
+        data = csv.DictReader(f)
+        
+        
+        hashmap_xs = []
+        hashmap_ys = []
+        
+        bettermap_xs = []
+        bettermap_ys = []
+        
+        linearmap_xs = []
+        linearmap_ys = []
+        
+        '''Get data out'''
+        for row in data:
+            if row['map_type'] == 'hashmap':
+                hashmap_xs.append(row['time_elapsed'])
+                hashmap_ys.append(row['data_size'])
+            if row['map_type'] == 'bettermap':
+                bettermap_xs.append(row['time_elapsed'])
+                bettermap_ys.append(row['data_size'])
+            if row['map_type'] == 'linearmap':
+                linearmap_xs.append(row['time_elapsed'])
+                linearmap_ys.append(row['data_size'])
+                
+        pyplot.plot(hashmap_xs, hashmap_ys)
+        scale = 'log'
+        pyplot.xscale(scale)
+        pyplot.yscale(scale)
+        pyplot.title('Hashmap Performance')
+        pyplot.xlabel('n')
+        pyplot.ylabel('run time (s)')
+        pyplot.show()
+        
+        
+        pyplot.plot(bettermap_xs, bettermap_ys)
+        scale = 'log'
+        pyplot.xscale(scale)
+        pyplot.yscale(scale)
+        pyplot.title('Bettermap Performance')
+        pyplot.xlabel('n')
+        pyplot.ylabel('run time (s)')
+        pyplot.show()
+
+        pyplot.plot(linearmap_xs, linearmap_ys)
+        scale = 'log'
+        pyplot.xscale(scale)
+        pyplot.yscale(scale)
+        pyplot.title('Linearmap Performance')
+        pyplot.xlabel('n')
+        pyplot.ylabel('run time (s)')
+        pyplot.show()
+
 
 if __name__ == '__main__':
     import sys
