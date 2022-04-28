@@ -17,7 +17,8 @@
 4. A stable sort is one that "maintains the relative order of records with equal keys". This might matter in practice because the order may be important.
 5. The worst sorting algorithm that has a name is called the Bogosort.
 6. What sort algorithm does the C library use? What sort algorithm does Python use? Are these algorithms stable? You might have to Google around to find these answers.
-	* The C library uses 
+	* The C library uses a  sorting algorithm known as qsort,which is basically a quicksort algorithm.
+	* Python by default uses a sorting algorithm called Timsort which essentially is a hybrid of both insertion sort and merge sort. This algorithm finds subsets of 	   pre-sorted data and then uses these subsets to further efficiently sort the remaining elements. 
 7. Many of the non-comparison sorts are linear, so why does does Python use an O(n logn) comparison sort?
 	* Python uses the O(n logn) comparison sort because in its worst case, the memory storage is n, and it's fast.
 
